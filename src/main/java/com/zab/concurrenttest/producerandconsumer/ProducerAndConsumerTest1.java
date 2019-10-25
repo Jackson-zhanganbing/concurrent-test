@@ -1,6 +1,9 @@
 package com.zab.concurrenttest.producerandconsumer;
 
 import java.util.LinkedList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 写一个固定容量的同步容器，拥有put和get方法，以及getCount方法，能够支持两个生产者线程和十个消费者线程
@@ -8,10 +11,10 @@ import java.util.LinkedList;
  * @author zab
  * @date 2019-10-21 21:00
  */
-public class ProducerAndConsumerTest {
+public class ProducerAndConsumerTest1 {
 
     Object lock = new Object();
-    MyContainer myContainer = new MyContainer();
+    MyContainer1 myContainer1 = new MyContainer1();
 
     public void t1() {
         while (true) {
@@ -21,7 +24,7 @@ public class ProducerAndConsumerTest {
                 e.printStackTrace();
             }
 
-            myContainer.put("馒头");
+            myContainer1.put("馒头");
 
         }
 
@@ -35,7 +38,7 @@ public class ProducerAndConsumerTest {
                 e.printStackTrace();
             }
 
-            myContainer.get();
+            myContainer1.get();
 
         }
 
@@ -54,16 +57,19 @@ public class ProducerAndConsumerTest {
 }
 
 
-class MyContainer<T> {
+class MyContainer1<T> {
 
     LinkedList<T> list = new LinkedList<T>();
     private static final int MAX = 10;
     private volatile int count = 0;
+    Lock lock = new ReentrantLock();
+    Condition putCondition = lock.newCondition();
+    Condition getCondition = lock.newCondition();
 
-    public synchronized boolean put(T t) {
+    public boolean put(T t) {
         while (MAX == list.size()) {
             try {
-                this.wait();
+                putCondition.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -71,15 +77,15 @@ class MyContainer<T> {
         list.add(t);
         count++;
         System.out.println("生产者生产了一个馒头，现在还有：" + getCount());
-        this.notifyAll();
+        getCondition.notify();
         return true;
 
     }
 
-    public synchronized void get() {
+    public void get() {
         while (count == 0) {
             try {
-                this.wait();
+                getCondition.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -87,11 +93,10 @@ class MyContainer<T> {
         count--;
         list.removeFirst();
         System.out.println("消费者消费了一个馒头，现在还有：" + getCount());
-
-        this.notifyAll();
+        putCondition.notify();
     }
 
-    public synchronized int getCount() {
+    public int getCount() {
         return count;
     }
 
