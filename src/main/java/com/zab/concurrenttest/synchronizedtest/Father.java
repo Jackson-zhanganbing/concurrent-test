@@ -1,4 +1,4 @@
-package com.zab.concurrenttest;
+package com.zab.concurrenttest.synchronizedtest;
 
 public class Father {
     protected synchronized void f() {
