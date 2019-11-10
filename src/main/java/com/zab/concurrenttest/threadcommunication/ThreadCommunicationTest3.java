@@ -23,6 +23,7 @@ public class ThreadCommunicationTest3 {
     public void f1() {
 
         for (int i = 1; i <= 10; i++) {
+            myContainer3.add("test");
             System.out.println("add" + i);
             if (i == 5) {
                 LockSupport.unpark(t2);

@@ -21,6 +21,7 @@ public class ThreadCommunicationTest4 {
     public void f1() {
 
         for (int i = 1; i <= 10; i++) {
+            myContainer4.add("test");
             System.out.println("add" + i);
             latch.countDown();
             if (i == 5) {
