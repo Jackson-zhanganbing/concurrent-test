@@ -1,9 +1,13 @@
 package com.zab.concurrenttest.concurrentclass;
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AQSTest {
     public static void main(String[] args) {
+        Lock lock = new ReentrantLock();
+        lock.lock();
         AbstractQueuedSynchronizer aqs = new AbstractQueuedSynchronizer() {
             @Override
             protected boolean tryAcquire(int arg) {
