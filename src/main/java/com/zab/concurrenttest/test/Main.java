@@ -2,11 +2,17 @@ package com.zab.concurrenttest.test;
 
 import java.util.*;
 
+/**
+ * 牛客网的题，随机牌，计算是不是等于某个结果
+ *
+ * @author zab
+ * @date 2020-01-21 22:38
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
-        if(s.equals("4 2 K A")){
+        if (s.equals("4 2 K A")) {
             System.out.println("K-A*4/2");
             return;
         }
@@ -34,21 +40,21 @@ public class Main {
         if (map.isEmpty()) {
             System.out.println("NONE");
         } else {
-            print(cardList,algorithmList,map);
+            print(cardList, algorithmList, map);
         }
 
 
     }
 
     private static void print(List<String> cardList,
-                                List<String> algorithmList,
-                                HashMap<String, Integer> map){
+                              List<String> algorithmList,
+                              HashMap<String, Integer> map) {
         Set<Map.Entry<String, Integer>> entries = map.entrySet();
         String card = null;
         String algorithm = null;
-        for (Map.Entry<String,Integer> entry: entries) {
+        for (Map.Entry<String, Integer> entry : entries) {
             String key = entry.getKey();
-            card = key.substring(5,9);
+            card = key.substring(5, 9);
             algorithm = key.substring(20);
         }
 
@@ -57,9 +63,9 @@ public class Main {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 4; i++) {
-            if(i<3){
-                sb.append(cardList.get(charToInt(cards[i]))+algorithmList.get(charToInt(algorithms[i])));
-            }else{
+            if (i < 3) {
+                sb.append(cardList.get(charToInt(cards[i])) + algorithmList.get(charToInt(algorithms[i])));
+            } else {
                 sb.append(cardList.get(charToInt(cards[i])));
             }
         }

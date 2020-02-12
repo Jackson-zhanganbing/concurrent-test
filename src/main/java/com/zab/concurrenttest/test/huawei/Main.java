@@ -1,4 +1,4 @@
-package com.zab.concurrenttest.huawei;
+package com.zab.concurrenttest.test.huawei;
 
 import java.util.ArrayList;
 import java.util.List;
